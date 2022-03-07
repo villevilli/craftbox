@@ -7,4 +7,4 @@ Build the typescript code to js using ``npm run build`` and run the resulting js
 
 ## Api
 
-//todo finish documentation and make app work
+//todo make backend
