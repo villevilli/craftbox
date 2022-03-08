@@ -1,2 +1,8 @@
 $textColor: white;
 $backgroundColor: rgb(20, 20, 20);
+
+@mixin center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
