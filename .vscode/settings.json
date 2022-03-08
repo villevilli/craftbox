@@ -1,0 +1,11 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "craftbid",
+            "database": "${workspaceFolder:CraftBox}/src/database.db"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}
