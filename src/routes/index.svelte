@@ -1,8 +1,15 @@
 <script lang="ts">
-import { svg_element } from "svelte/internal";
+    function submit(e) {
+        const formData = new FormData(e.target);
 
-
-</script>
+        const data = {};
+        for (let field of formData) {
+            const [key, value] = field;
+            data[key] = value;
+        }
+        console.log(data)
+    }
+ </script>
 
 <main class="main">
     <div class="loginBox">
@@ -10,11 +17,13 @@ import { svg_element } from "svelte/internal";
             <h1 class="title">Login To Craftbox</h1>
             <img src="/logo.svg/" alt="Craftbox Logo">
         </div>
-        <form>
-            <input class="text" type="text" placeholder="Username">
-            <input class="text" type="password" placeholder="Password">
+
+        <form on:submit|preventDefault={submit} autocomplete="off">
+            <input class="text" type="text" id="username" name="username" placeholder="Username" value="" required>
+            <input class="text" type="password" id="password" name="password" placeholder="Password" value="" required>
             <input class="submit" type="submit" value="Login">
         </form>
+
     </div>
 </main>
 
@@ -47,6 +56,9 @@ import { svg_element } from "svelte/internal";
                 &.text{
                     align-self: stretch;
                     transition: 100ms;
+                    &:invalid{
+                        border: 2px rgb(255, 103, 103) solid;
+                    }
                 }
                 &.submit{
                     align-self: flex-end;
