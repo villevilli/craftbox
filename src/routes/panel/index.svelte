@@ -3,8 +3,10 @@
 
     let username:string;
 
+    //ignore this typerror it seems to work fine
+    
     session.subscribe(value => {
-        console.log(value)
+        username = value.user.username
     })
 </script>
 

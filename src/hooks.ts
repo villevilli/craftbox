@@ -10,11 +10,17 @@ const tokenQuery = db.prepare(`
     ON tokens.userid = users.userid
     WHERE token = ?;
 `)
+
+const userQuery = db.prepare(`
+    SELECT username FROM users WHERE userid = ?
+`)
+
 /** @type {import('@sveltejs/kit').Handle} */
 export async function handle({ resolve, event}) {
     const now = DateTime.now()
     const url = new URL(event.request.url);
     const rawCookies = event.request.headers.get('cookie')
+
 
     if (rawCookies == null){
         authenticated = false
@@ -23,6 +29,7 @@ export async function handle({ resolve, event}) {
         const userdata = tokenQuery.get(cookies.token)
 
         if (typeof(userdata) === 'object') {
+            event.locals.user = await userQuery.get(userdata.userid)
 
             let expiryDate = DateTime.fromSQL(userdata.expiry)
 
@@ -42,20 +49,17 @@ export async function handle({ resolve, event}) {
         }
     }
 
+    
     const response = await resolve(event);
     return response;
 }
-/*
-export async function getSession(event) {
-    const cookies = parse(event.request.headers.get('cookie'));
-    const userdata = tokenQuery.run(cookies.token)
 
+export async function getSession(event) {
     return event.locals.user
     ? {
         user: {
-            'username': userdata.username
+            'username': event.locals.user.username
         }
       }
     : {}; 
 }
-*/
