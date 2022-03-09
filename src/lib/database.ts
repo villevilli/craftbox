@@ -1,6 +1,7 @@
 import Database from 'better-sqlite3'
 
 const db = new Database('./src/database.db')
+const userQuery = db.prepare('SELECT * FROM users WHERE username = ?')
 
 const schema = `
     CREATE TABLE IF NOT EXISTS users(
@@ -21,5 +22,16 @@ const schema = `
 `;
 
 db.exec(schema)
+
+export async function getUserData(username){
+    console.log(username)
+
+    let user = await userQuery.get(username);
+
+    console.log(user)
+
+    return(user)
+    
+}
 
 export default db

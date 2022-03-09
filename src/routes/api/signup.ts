@@ -1,23 +1,12 @@
 import db from "$lib/database";
-import { hashSaltPassword } from "$lib/hashcurity";
-
-/*
-Request Format
-
-{
-    "username": username,
-    "password": password
-}
-
-Hashes and salts users passwords and stroes thoes in the database
-*/
-
-//
+import bcrypt from 'bcrypt';
 
 interface signupBody{
     "username": string,
     "password": string
-}
+};
+
+const saltRounds = 200;
 
 /** @type {import('@sveltejs/kit').RequestHandler} */
 export async function post({ request }) {
@@ -26,8 +15,12 @@ export async function post({ request }) {
 
         const insertUser = db.prepare('INSERT INTO users (username,password) VALUES (?, ?)')
     
-        const userInsert = insertUser.run(body.username, hashSaltPassword(body.password))
-    
+        console.log (bcrypt)
+
+        const hashedPassword = await bcrypt.hash(body.password, saltRounds);
+
+        insertUser.run(body.username, hashedPassword)
+
         return {
             status: 201,
             headers: {},
