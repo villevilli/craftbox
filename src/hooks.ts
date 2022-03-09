@@ -17,17 +17,19 @@ const userQuery = db.prepare(`
 
 /** @type {import('@sveltejs/kit').Handle} */
 export async function handle({ resolve, event}) {
+
     const now = DateTime.now()
     const url = new URL(event.request.url);
     const rawCookies = event.request.headers.get('cookie')
 
-
+    //Skips logic to check if token is current if no token cookie exsists
     if (rawCookies == null){
         authenticated = false
     }else{
         const cookies = parse(rawCookies);
         const userdata = tokenQuery.get(cookies.token)
 
+        //makes sure token is valid in the db and not expired, then authenticates user
         if (typeof(userdata) === 'object') {
             event.locals.user = await userQuery.get(userdata.userid)
 
@@ -39,10 +41,12 @@ export async function handle({ resolve, event}) {
         }
     }
 
+    //redirect users who are authenticated from login to panel
     if (authenticated && url.pathname == '/') {
         return  Response.redirect(url.origin+'/panel/',302)
     }
     
+    //redirects users who are not authenticated from panel to login
     if (url.pathname.startsWith('/panel')){
         if (authenticated == false) {
             return  Response.redirect(url.origin+'/',302)
