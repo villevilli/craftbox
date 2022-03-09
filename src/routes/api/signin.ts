@@ -17,6 +17,14 @@ export async function post({ request }) {
 
     const user = await userQuery.get(requestBody.username)
 
+    if (typeof(user) != "object"){
+        return{
+            status: 401,
+            headers: {},
+            body: {}
+        }
+    }
+
     let result = await bcrypt.compareSync(requestBody.password, user.password)
     if (result == true){
 
@@ -30,7 +38,7 @@ export async function post({ request }) {
         return{
             status: 200,
             headers: {
-                "Set-Cookie": `token=${token}; Max-Age=172800`
+                "Set-Cookie": `token=${token}; Max-Age=172800; SameSite=Strict; Path=/;`
             },
             body: `Authenticated as ${user.username} with token ${token}`
         }

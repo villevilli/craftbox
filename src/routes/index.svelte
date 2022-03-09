@@ -1,13 +1,32 @@
 <script lang="ts">
-    function submit(e) {
-        const formData = new FormData(e.target);
+    let password;
+    let authFailed = false;
 
+    async function submit(e) {
+        const formData = new FormData(e.target);
+        const url = '/api/signin'
         const data = {};
+
         for (let field of formData) {
             const [key, value] = field;
             data[key] = value;
         }
-        console.log(data)
+        fetch(url ,{
+            method: 'POST',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify(data)
+        }).then(response => {
+            if (response.status == 401){
+                password = "";
+                authFailed = true;
+            }else if (response.status == 200){
+                window.location.href = '/panel/'
+            }
+        })
     }
  </script>
 
@@ -20,8 +39,13 @@
 
         <form on:submit|preventDefault={submit} autocomplete="off">
             <input class="text" type="text" id="username" name="username" placeholder="Username" value="" required>
-            <input class="text" type="password" id="password" name="password" placeholder="Password" value="" required>
-            <input class="submit" type="submit" value="Login">
+            <input class="text" bind:value={password} type="password" id="password" name="password" placeholder="Password" required>
+            <span>
+                {#if authFailed}
+                    <p class="authFail">Wrong username or password</p>
+                {/if}
+                <input class="submit" type="submit" value="Login">
+            </span>
         </form>
 
     </div>
@@ -41,6 +65,16 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            span{
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                .authFail{
+                    padding-left: 20px;
+                    color: rgb(255, 103, 103);
+
+                }
+            }
             input{
                 margin: 4px;
                 background-color: lighten($backgroundColor, 2%);

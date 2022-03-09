@@ -6,7 +6,7 @@ interface signupBody{
     "password": string
 };
 
-const saltRounds = 200;
+const saltRounds = 12;
 
 /** @type {import('@sveltejs/kit').RequestHandler} */
 export async function post({ request }) {
@@ -14,8 +14,6 @@ export async function post({ request }) {
         let body:signupBody = await request.json();
 
         const insertUser = db.prepare('INSERT INTO users (username,password) VALUES (?, ?)')
-    
-        console.log (bcrypt)
 
         const hashedPassword = await bcrypt.hash(body.password, saltRounds);
 
