@@ -1,7 +1,6 @@
 import Database from 'better-sqlite3'
 
-const db = new Database('./src/database.db')
-const userQuery = db.prepare('SELECT * FROM users WHERE username = ?')
+const db = new Database('./src/database.db');
 
 const schema = `
     CREATE TABLE IF NOT EXISTS users(
@@ -19,9 +18,12 @@ const schema = `
         expiry INTEGER NOT NULL,
         FOREIGN KEY(userid) REFERENCES users(userid)
     );
+
+    CREATE INDEX IF NOT EXISTS token_index ON tokens(token);
 `;
 
-db.exec(schema)
+db.exec(schema);
+const userQuery = db.prepare('SELECT * FROM users WHERE username = ?');
 
 export async function getUserData(username){
     console.log(username)

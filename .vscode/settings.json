@@ -5,6 +5,12 @@
             "driver": "SQLite",
             "name": "craftbid",
             "database": "${workspaceFolder:CraftBox}/src/database.db"
+        },
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "database",
+            "database": "${workspaceFolder:craftbox}/src/database.db"
         }
     ],
     "sqltools.useNodeRuntime": true
