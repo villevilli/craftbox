@@ -42,7 +42,7 @@ export async function handle({ resolve, event}) {
     }
 
     //redirect users who are authenticated from login to panel
-    if (authenticated && url.pathname == '/') {
+    if (authenticated && url.pathname == '/login') {
         return  Response.redirect(url.origin+'/panel/',302)
     }
     
