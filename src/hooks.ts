@@ -49,7 +49,7 @@ export async function handle({ resolve, event}) {
     //redirects users who are not authenticated from panel to login
     if (url.pathname.startsWith('/panel')){
         if (authenticated == false) {
-            return  Response.redirect(url.origin+'/',302)
+            return  Response.redirect(url.origin+'/login',302)
         }
     }
 

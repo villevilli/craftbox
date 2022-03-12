@@ -90,7 +90,7 @@
                 &.text{
                     align-self: stretch;
                     transition: 100ms;
-                    &:invalid{
+                    &:user-invalid{
                         border: 2px rgb(255, 103, 103) solid;
                     }
                 }
