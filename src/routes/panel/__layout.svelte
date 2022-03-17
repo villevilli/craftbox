@@ -2,6 +2,8 @@
     import { page } from '$app/stores';
     import { session } from "$app/stores";
 
+    import PasswordChangeWindow from "$lib/passwordChangeWindow.svelte";
+
     console.log($session);
 
     interface sidebarObject{
@@ -49,7 +51,7 @@
 
 <main>
     {#if $session.ChangePwd == 1}
-        <h1>Change Your Password!</h1>
+        <PasswordChangeWindow user={$session.username}/>
     {:else}
         <slot />
     {/if}
