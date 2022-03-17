@@ -1,5 +1,8 @@
 <script lang="ts">
     import { page } from '$app/stores';
+    import { session } from "$app/stores";
+
+    console.log($session);
 
     interface sidebarObject{
         "title"?: string,
@@ -45,7 +48,12 @@
 </div>
 
 <main>
-    <slot />
+    {#if $session.ChangePwd == 1}
+        <h1>Change Your Password!</h1>
+    {:else}
+        <slot />
+    {/if}
+    
 </main>
 
 <style lang="scss">

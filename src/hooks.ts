@@ -12,7 +12,7 @@ const tokenQuery = db.prepare(`
 `)
 
 const userQuery = db.prepare(`
-    SELECT username FROM users WHERE userid = ?
+    SELECT username, requirePwdChange as ChangePwd FROM users WHERE userid = ?
 `)
 
 /** @type {import('@sveltejs/kit').Handle} */
@@ -60,10 +60,5 @@ export async function handle({ resolve, event}) {
 
 export async function getSession(event) {
     return event.locals.user
-    ? {
-        user: {
-            'username': event.locals.user.username
-        }
-      }
-    : {}; 
+    {}; 
 }

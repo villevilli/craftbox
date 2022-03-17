@@ -23,3 +23,7 @@ SELECT strftime('%s')
 
 --@block
 DELETE FROM tokens;
+
+
+--@block
+DROP TABLE *;
