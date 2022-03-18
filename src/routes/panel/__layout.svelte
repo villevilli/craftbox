@@ -23,7 +23,7 @@
     ]
 </script>
 
-<div class="sidebar">
+<nav class="sidebar">
     <a href="/panel">
         <img class="logoimg" src="/logo.svg" alt="Craftbox Logo">
         <p class="logoText">Craftbox</p>
@@ -47,16 +47,19 @@
         <span class="sidebaricon material-icons">logout</span>
         <p class="sidebarlabel">Log Out</p>
     </button>
-</div>
+</nav>
 
-<main>
-    {#if $session.ChangePwd == 1}
-        <PasswordChangeWindow user={$session.username}/>
-    {:else}
-        <slot />
-    {/if}
+{#if $session.ChangePwd == 1}
+<div class="overlay">
+    <PasswordChangeWindow user={$session.username}/>
+</div>
     
-</main>
+{:else}
+    <main>
+        <slot/>
+    </main>
+{/if}
+
 
 <style lang="scss">
     @mixin reset-a{
@@ -64,13 +67,20 @@
         color: inherit;
         outline: 0;
     }
+    
+    .overlay{
+        @include overlay;
+        @include center;
+        position: fixed;
+        z-index: 999999999;
+    }
 
     .sidebar {
         display: flex;
         flex-direction: column;
         align-items: center;
-        position: fixed;
         box-sizing: border-box;
+        position: fixed;
         height: 100%;
         width: 100px;
         padding-top: 10px;

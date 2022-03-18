@@ -26,4 +26,7 @@ DELETE FROM tokens;
 
 
 --@block
-DROP TABLE *;
+DROP TABLE tokens;
+DROP TABLE users;
+
+DELETE FROM tokens
