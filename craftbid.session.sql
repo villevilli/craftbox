@@ -26,7 +26,32 @@ DELETE FROM tokens;
 
 
 --@block
+UPDATE tokens SET
+    expiry = '2022-03-10 00:00:00'
+WHERE
+    tokenid = 2
+
+
+--@block
+UPDATE users SET
+    password = 'gerateass',
+    requirePwdChange = 0
+WHERE
+    username = 'username';
+
+
+--@block
+INSERT INTO users (username, password, requirePwdChange)
+values("username", "password", 1);
+
+
+--@block
+SELECT * FROM users;
+
+
+--@block
 DROP TABLE tokens;
 DROP TABLE users;
 
+--@block
 DELETE FROM tokens

@@ -7,9 +7,13 @@ interface signinBody{
     "password": string
 }
 
-const userQuery = db.prepare('SELECT * FROM users WHERE username = ?')
-const tokenQuery = db.prepare(`INSERT INTO tokens (userid,token,expiry)
-                                VALUES (@userid, @token, datetime('now','+2 day'))`)
+console.log(db)
+
+const userQuery = db.prepare('SELECT * FROM users WHERE username = ?');
+const tokenQuery = db.prepare(`
+INSERT INTO tokens (userid,token,expiry)
+VALUES (@userid, @token, datetime('now','+2 day'));
+`);
 
 /** @type {import('@sveltejs/kit').RequestHandler} */
 export async function post({ request }) {
@@ -33,7 +37,7 @@ export async function post({ request }) {
         tokenQuery.run({
             userid: user.userid,
             token: token,
-        })
+        });
 
         return{
             status: 200,

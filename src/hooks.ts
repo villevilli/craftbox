@@ -1,6 +1,6 @@
-import db from "$lib/database";
+import db, {checkAuth} from "$lib/database";
 import { parse } from "cookie";
-import { DateTime } from "luxon";
+
 
 let authenticated = false;
 
@@ -17,8 +17,6 @@ const userQuery = db.prepare(`
 
 /** @type {import('@sveltejs/kit').Handle} */
 export async function handle({ resolve, event}) {
-
-    const now = DateTime.now()
     const url = new URL(event.request.url);
     const rawCookies = event.request.headers.get('cookie')
 
@@ -27,17 +25,20 @@ export async function handle({ resolve, event}) {
         authenticated = false
     }else{
         const cookies = parse(rawCookies);
-        const userdata = tokenQuery.get(cookies.token)
+        const userData = tokenQuery.get(cookies.token)
 
         //makes sure token is valid in the db and not expired, then authenticates user
-        if (typeof(userdata) === 'object') {
-            event.locals.user = await userQuery.get(userdata.userid)
+        if (typeof(userData) === 'object') {
+            event.locals.user = await userQuery.get(userData.userid)
 
+            authenticated = checkAuth(userData.token);
+            /*
             let expiryDate = DateTime.fromSQL(userdata.expiry)
 
             if (expiryDate > now) {
                 authenticated = true;
             }
+            */
         }
     }
 
