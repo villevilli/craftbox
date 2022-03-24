@@ -77,7 +77,7 @@ export function checkAuth(token:string, forWhat:string){
 }
 
 export async function updateUser(username:string, password:string,requirePwdChange = 0) {
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const hashedPassword = await bcrypt.hashSync(password, saltRounds);
 
     updateUserQuery.run({
         username: username,
@@ -87,7 +87,7 @@ export async function updateUser(username:string, password:string,requirePwdChan
 }
 
 export async function addUser(username:string, password:string, requirePwdChange = 1) {
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const hashedPassword = bcrypt.hashSync(password, saltRounds);
 
     insertUser.run(username, hashedPassword, requirePwdChange)
 }

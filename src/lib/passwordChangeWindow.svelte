@@ -6,7 +6,7 @@
 
     async function submit(e) {
         const formData = new FormData(e.target);
-        const url = '/api/signin'
+        const url = '/api/updateUser'
         const data:any = {};
 
         for (let field of formData) {
@@ -25,7 +25,7 @@
                 },
                 referrerPolicy: 'no-referrer',
                 body: JSON.stringify({
-                    'password': data.password,
+                    'newPassword': data.password,
                     'username': user
                 })
             }).then(response => {

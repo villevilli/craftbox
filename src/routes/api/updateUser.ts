@@ -1,4 +1,4 @@
-import db, { tokenQuery } from "$lib/database";
+import db, { tokenQuery, checkAuth, updateUser } from "$lib/database";
 import { parse } from "cookie";
 
 interface updateBody{
@@ -8,15 +8,17 @@ interface updateBody{
 
 /** @type {import('@sveltejs/kit').RequestHandler} */
 export async function post({ request }) {
+    console.log(`\n\n\n\n UPDATING USERS !!!`)
+
     let body:updateBody = request.json
     console.log(request)
 
     try {
-        let cookies = parse(request.cookie)
+        let cookies = parse(request.headers.get('cookie'))
 
-        if (db.checkAuth(cookies.token, 'changePwd')){
+        if (checkAuth(cookies.token, 'changePwd')){
 
-            db.updateUser(await tokenQuery.get(cookies.token).username, body.newPassword, 0)
+            updateUser(await tokenQuery.get(cookies.token).username, body.newPassword, 0)
 
             return{
                 status: 200,
@@ -25,6 +27,7 @@ export async function post({ request }) {
         }
 
     } catch (err) {
+        console.error(err);
         return{
             status: 401,
             body: "Unauthorized"
